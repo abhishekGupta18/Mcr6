@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { Home } from "./Pages/Home";
 import { CuisinePage } from "./Pages/CuisinePage";
+import { RestaurantPage } from "./Pages/RestaurantPage";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cuisine/:cuisineId" element={<CuisinePage />} />
+        <Route path="/restaurant/:restaurantId" element={<RestaurantPage />} />
       </Routes>
     </div>
   );

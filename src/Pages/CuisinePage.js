@@ -1,4 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 import { useRestaurantContext } from "../Context/RestaurantContext";
 
@@ -8,6 +8,8 @@ export const CuisinePage = () => {
   const findCuisine = restaurantCuisine?.find(
     (cuisine) => cuisine?.id === Number(cuisineId)
   );
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -31,13 +33,16 @@ export const CuisinePage = () => {
       <div className="flex flex-col items-center mt-[5rem]">
         <ul>
           {restaurantDetails
-            ?.filter((restaurant) => restaurant?.id === findCuisine?.id)
+            ?.filter((restaurant) => restaurant?.cuisine_id === findCuisine?.id)
             .map((item) => (
               <li>
                 <p className="mb-8 text-2xl font-bold  ">{item?.name}</p>
                 <ul className="flex gap-8 flex-wrap ">
                   {item?.menu?.map((dish) => (
-                    <li className="flex flex-col gap-4 shadow-lg p-4 rounded-[0.5rem] ">
+                    <li
+                      className="flex flex-col gap-4 shadow-lg p-4 rounded-[0.5rem] "
+                      onClick={() => navigate(`/restaurant/${item?.id}`)}
+                    >
                       <img
                         src={dish?.imgSrc}
                         alt="dish"
