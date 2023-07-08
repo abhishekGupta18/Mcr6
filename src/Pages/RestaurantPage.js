@@ -1,13 +1,47 @@
 import { useParams } from "react-router-dom";
 import { useRestaurantContext } from "../Context/RestaurantContext";
-import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
+import { Modal } from "@mui/material";
+import { useState } from "react";
 export const RestaurantPage = () => {
-  const { restaurantDetails } = useRestaurantContext();
+  const [addReview, setAddReview] = useState({
+    rating: null,
+    comment: "",
+    revName: "",
+    pp: "",
+  });
+  const [showModal, setShowModal] = useState(false);
+  const { restaurantDetails, setRestaurantsDetails } = useRestaurantContext();
   const { restaurantId } = useParams();
+
+  const openModal = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
 
   const findRestaurant = restaurantDetails?.find(
     (item) => item?.id === Number(restaurantId)
   );
+  const addReviewHandler = () =>
+    setRestaurantsDetails([
+      ...restaurantDetails,
+      restaurantDetails?.map((item) =>
+        item.id === findRestaurant.id
+          ? {
+              ...findRestaurant,
+              ratings: [...findRestaurant?.ratings, addReview],
+            }
+          : item
+      ),
+    ]);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
     <div className="flex flex-col items-center my-8 gap-16">
@@ -25,7 +59,10 @@ export const RestaurantPage = () => {
             average rating : {findRestaurant?.averageRating}
           </p>
         </div>
-        <button className="text-white-color  bg-primary-color rounded-[0.5rem] py-1 px-2">
+        <button
+          className="text-white-color  bg-primary-color rounded-[0.5rem] py-1 px-2"
+          onClick={() => openModal()}
+        >
           Add Review
         </button>
       </div>
@@ -58,6 +95,57 @@ export const RestaurantPage = () => {
           </ul>
         </div>
       </div>
+      <Modal
+        open={showModal}
+        onClose={closeModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div style={{ ...style }}>
+          <form
+            onSubmit={addReviewHandler}
+            className=" flex flex-col p-4 bg-primary-color gap-4"
+          >
+            <label>
+              Name:{" "}
+              <input
+                type="text"
+                onChange={(e) =>
+                  setAddReview({ ...addReview, revName: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Comment:{" "}
+              <input
+                type="text"
+                onChange={(e) =>
+                  setAddReview({ ...addReview, comment: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Rating:{" "}
+              <select
+                onChange={(e) =>
+                  setAddReview({
+                    ...addReview,
+                    removeEventListenerating: e.target.value,
+                  })
+                }
+              >
+                <option>select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </label>
+            <button type="submit">submit</button>
+          </form>
+        </div>
+      </Modal>
     </div>
   );
 };

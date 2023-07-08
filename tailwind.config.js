@@ -10,6 +10,7 @@ export default {
       "primary-color": "#ef4444",
       "sec-color": "#fecaca",
       "white-color": "#ffff",
+      "black-color": "#0000",
     },
   },
   plugins: [],

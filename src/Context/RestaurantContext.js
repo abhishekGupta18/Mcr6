@@ -7,11 +7,11 @@ export const RestaurantContext = createContext();
 
 export const RestaurantContextProvider = ({ children }) => {
   const [restaurantCuisine, setRestaurantCuisine] = useState(cuisineData);
-  const [restaurantDetails, setRestaurantsData] = useState(restaurantsData);
+  const [restaurantDetails, setRestaurantsDetails] = useState(restaurantsData);
 
   return (
     <RestaurantContext.Provider
-      value={{ restaurantCuisine, restaurantDetails }}
+      value={{ restaurantCuisine, restaurantDetails, setRestaurantsDetails }}
     >
       {children}
     </RestaurantContext.Provider>
