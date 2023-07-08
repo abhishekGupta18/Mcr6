@@ -1,9 +1,16 @@
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
+
+import { Home } from "./Pages/Home";
+import { CuisinePage } from "./Pages/CuisinePage";
 
 function App() {
   return (
-    <div className="text-primary-color flex justify-center bg-sec-color">
-      My name is abhi
+    <div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/cuisine/:cuisineId" element={<CuisinePage />} />
+      </Routes>
     </div>
   );
 }

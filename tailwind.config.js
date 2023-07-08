@@ -7,8 +7,9 @@ export default {
     },
     extend: {},
     colors: {
-      "primary-color": "#3730a3",
-      "sec-color": "#f1f5f9",
+      "primary-color": "#ef4444",
+      "sec-color": "#fecaca",
+      "white-color": "#ffff",
     },
   },
   plugins: [],
