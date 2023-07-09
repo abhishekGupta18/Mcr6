@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useRestaurantContext } from "../Context/RestaurantContext";
 import { Modal } from "@mui/material";
 import { useState } from "react";
@@ -7,7 +7,6 @@ export const RestaurantPage = () => {
     rating: null,
     comment: "",
     revName: "",
-    pp: "",
   });
   const [showModal, setShowModal] = useState(false);
   const { restaurantDetails, setRestaurantsDetails } = useRestaurantContext();
@@ -19,18 +18,20 @@ export const RestaurantPage = () => {
   const findRestaurant = restaurantDetails?.find(
     (item) => item?.id === Number(restaurantId)
   );
-  const addReviewHandler = () =>
-    setRestaurantsDetails([
-      ...restaurantDetails,
-      restaurantDetails?.map((item) =>
-        item.id === findRestaurant.id
-          ? {
-              ...findRestaurant,
-              ratings: [...findRestaurant?.ratings, addReview],
-            }
-          : item
-      ),
-    ]);
+  const addReviewHandler = () => {
+    return setRestaurantsDetails(
+      restaurantDetails?.map((item) => {
+        if (item?.id === findRestaurant?.id) {
+          return {
+            ...findRestaurant,
+            ratings: [...findRestaurant?.ratings, addReview],
+          };
+        } else {
+          return item;
+        }
+      })
+    );
+  };
 
   const style = {
     position: "absolute",
@@ -45,6 +46,12 @@ export const RestaurantPage = () => {
 
   return (
     <div className="flex flex-col items-center my-8 gap-16">
+      <NavLink
+        to="/"
+        className="absolute text-3xl top-[5%] bottom-[100%] left-[10%] right-[90%]"
+      >
+        ←
+      </NavLink>
       <div className="flex items-center justify-between gap-[15rem] ">
         <div className="flex flex-col gap-2">
           <p className="text-3xl font-bold">{findRestaurant?.name}</p>
@@ -110,6 +117,7 @@ export const RestaurantPage = () => {
               Name:{" "}
               <input
                 type="text"
+                value={addReview?.revName}
                 onChange={(e) =>
                   setAddReview({ ...addReview, revName: e.target.value })
                 }
@@ -118,6 +126,7 @@ export const RestaurantPage = () => {
             <label>
               Comment:{" "}
               <input
+                value={addReview?.comment}
                 type="text"
                 onChange={(e) =>
                   setAddReview({ ...addReview, comment: e.target.value })
@@ -127,10 +136,11 @@ export const RestaurantPage = () => {
             <label>
               Rating:{" "}
               <select
+                value={addReview?.rating}
                 onChange={(e) =>
                   setAddReview({
                     ...addReview,
-                    removeEventListenerating: e.target.value,
+                    rating: e.target.value,
                   })
                 }
               >
@@ -142,7 +152,12 @@ export const RestaurantPage = () => {
                 <option value="5">5</option>
               </select>
             </label>
-            <button type="submit">submit</button>
+            <button
+              type="submit"
+              className="text-white-color mx-auto text-xl bg-[#3b82f6] rounded-[0.5rem] py-2 px-4 my-8 w-[40%]"
+            >
+              Submit
+            </button>
           </form>
         </div>
       </Modal>
