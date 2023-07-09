@@ -18,19 +18,32 @@ export const RestaurantPage = () => {
   const findRestaurant = restaurantDetails?.find(
     (item) => item?.id === Number(restaurantId)
   );
-  const addReviewHandler = () => {
-    return setRestaurantsDetails(
-      restaurantDetails?.map((item) => {
-        if (item?.id === findRestaurant?.id) {
-          return {
-            ...findRestaurant,
-            ratings: [...findRestaurant?.ratings, addReview],
-          };
-        } else {
-          return item;
-        }
-      })
+  console.log(restaurantDetails);
+  const addReviewHandler = (e) => {
+    e.preventDefault();
+    // return setRestaurantsDetails(
+    //   restaurantDetails?.map((item) => {
+    //     if (item?.id === findRestaurant?.id) {
+    //       return {
+    //         ...findRestaurant,
+    //         ratings: [...findRestaurant?.ratings, addReview],
+    //       };
+    //     } else {
+    //       return item;
+    //     }
+    //   })
+    // );
+
+    const findAddReviewRestaurant = restaurantDetails?.find(
+      (item) => item?.id === findRestaurant?.id
     );
+
+    findAddReviewRestaurant?.ratings?.push(addReview);
+    setRestaurantsDetails((prev) => {
+      return prev?.map((item) =>
+        item?.id === findRestaurant?.id ? findAddReviewRestaurant : item
+      );
+    });
   };
 
   const style = {
